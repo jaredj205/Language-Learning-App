@@ -27,6 +27,9 @@ const cards: Card[] = [
     back: "dog"
   }, 
 ]
+function displayDeck(){
+  
+}
 
 function addCard(card: Card){
   cards.push(card);
@@ -63,6 +66,7 @@ function AddCardForm({onAdd}: AddCardFormProps){
 function CardTraining(){
   const [index, setIndex] = useState(0);
   const [flipCard, setFlipCard] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
   const hasNext = index < cards.length - 1;
 
   function handleNextClick() {
@@ -80,6 +84,10 @@ function CardTraining(){
     setFlipCard(!flipCard);
   }
 
+  function handleShowAddForm(){
+    setShowAddForm(!showAddForm);
+  }
+
 
   let frontCard = cards[index].front;
   let backCard = cards[index].back;
@@ -92,7 +100,8 @@ function CardTraining(){
       </h2>
       <button onClick={handleFlipCard}> Flip </button>
       <h3>Card {index + 1 } of {cards.length}</h3>
-      <AddCardForm onAdd={addCard} />
+      <button onClick={handleShowAddForm}> Add a card </button>
+      {showAddForm && <AddCardForm onAdd={addCard} />}
 
     </div>
   );
