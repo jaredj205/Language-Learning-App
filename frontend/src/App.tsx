@@ -1,19 +1,21 @@
 import { useState } from 'react'
+import hamburgerIcon from './assets/hamburgerIcon.svg'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
-
-
 
 type Card = {
   front: string;
   back: string;
 }
+
+
+
 type AddCardFormProps = {
   onAdd: (card: Card) => void;
 };
 
-const cards: Card[] = [
+const cardsExample: Card[] = [
   {
     front: "dom",
     back: "house"
@@ -27,17 +29,34 @@ const cards: Card[] = [
     back: "dog"
   }, 
 ]
-function displayDeck(){
+function DisplayDeck({cards}: {cards: Card[]}){
+
+  return(<table>
+  <thead>
+    <tr>
+      <th>Front</th>
+      <th>Back</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {cards.map((card, index) => (
+      <tr key={index}>
+        <td>{card.front}</td>
+        <td>{card.back}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>);
+  
   
 }
 
-function addCard(card: Card){
-  cards.push(card);
-}
+
 function AddCardForm({onAdd}: AddCardFormProps){
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
-
+  
 
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>){
@@ -60,14 +79,52 @@ function AddCardForm({onAdd}: AddCardFormProps){
 
         </form>
       </div>
-    )
+    );
 
   }
+  function IconMenu(){
+    const [showMenu, setShowMenu] = useState(false);
+
+    function handleShowMenu(){
+      setShowMenu(!showMenu);
+    }
+
+    function MenuDisplay(){
+      return (
+        <div className="menuDisplay">
+          <p>Menu</p>
+        </div>
+
+      );
+    }
+
+    return(
+      <div>
+        <button id="hamburgerButton" onClick={handleShowMenu}><img src={hamburgerIcon} alt="Drop down Menu"></img></button>
+        {showMenu && <MenuDisplay />}
+      </div>
+    )
+  }
+
 function CardTraining(){
+  const [cards, setCards] = useState<Card[]>([{front: "", back: ""}]);
   const [index, setIndex] = useState(0);
   const [flipCard, setFlipCard] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showTable, setShowTable] = useState(false);
   const hasNext = index < cards.length - 1;
+
+  function handleFlipCard() {
+    setFlipCard(!flipCard);
+  }
+
+  function handleShowAddForm(){
+    setShowAddForm(!showAddForm);
+  }
+
+  function handleShowTable(){
+    setShowTable(!showTable);
+  }
 
   function handleNextClick() {
     if (hasNext) {
@@ -79,14 +136,11 @@ function CardTraining(){
       setFlipCard(false);
     }
   }
-
-  function handleFlipCard() {
-    setFlipCard(!flipCard);
+  function addCard(card: Card){
+  setCards(prev => [...prev, card]);
   }
 
-  function handleShowAddForm(){
-    setShowAddForm(!showAddForm);
-  }
+  
 
 
   let frontCard = cards[index].front;
@@ -102,6 +156,10 @@ function CardTraining(){
       <h3>Card {index + 1 } of {cards.length}</h3>
       <button onClick={handleShowAddForm}> Add a card </button>
       {showAddForm && <AddCardForm onAdd={addCard} />}
+      <button onClick={handleShowTable}> Show Deck </button>
+      {showTable && <DisplayDeck cards={cards} />}
+      <div className="menuContainer"><IconMenu/></div>
+      
 
     </div>
   );

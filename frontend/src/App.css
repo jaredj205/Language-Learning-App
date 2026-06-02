@@ -182,3 +182,39 @@
     border-right-color: var(--border);
   }
 }
+
+#hamburgerButton{
+  position:absolute;
+  width:30px;
+  height:30px;
+
+  right:20px;
+  top:10px;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#hamburgerButton img {
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  object-fit: contain;
+  display: block;
+}
+.menuDisplay{
+  position:absolute;
+  width:10%;
+  height:20%;
+  right:20px;
+  top:20px;
+  background-color: green;
+}
+.menuContainer{
+  position:relative;
+}
