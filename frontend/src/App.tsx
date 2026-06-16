@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import DeckSettings from './pages/DeckSettings';
 import './App.css';
-import Decks from "./pages/Decks";
+import Practice from "./pages/Practice";
 import { DeckProvider } from "./context/DeckContext";
 import DeckList from "./pages/DecksList";
 
@@ -12,8 +12,9 @@ function App(){
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/deckSettings" element={<DeckSettings />} />
-      <Route path="/decks" element={<Decks />} />
-      <Route path="/decks/:deckId" element={<Decks />} />
+      <Route path="/deckSettings/:deckId" element={<DeckSettings />} />
+      <Route path="/decks" element={<Practice />} />
+      <Route path="/decks/:deckId" element={<Practice />} />
       <Route path="/decksList" element={<DeckList/>}/>
     </Routes>
   )

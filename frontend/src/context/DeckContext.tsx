@@ -2,13 +2,13 @@ import { createContext, useContext, useEffect, useState, type ReactNode, } from 
 import { type Deck } from "../types/Deck";
 import { type Card } from "../types/Card";
 
-type DeckContextType = {
+export type DeckContextType = {
   decks: Deck[];
-  cards: Card[];
+  
   addDeck: (name: string) => void;
   deleteDeck: (id: string) => void;
-  addCard: (id: string, card: Card[]) => void;
-  deleteCard: (id: string, card: Card[]) => void;
+  addCard: (id: string, card: Card) => void;
+  deleteCard: (id: string, cardId: string) => void;
   setDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
 
 };
@@ -44,8 +44,16 @@ export function DeckProvider({children}: DeckProviderProps){
 
     }
 
-    function deleteCard(id: string, card: Card){
-        
+    function deleteCard(id: string, cardId: string){
+        setDecks(prev => prev.map(deck => {
+        if(deck.id !== id){
+        return deck;
+      }
+      return {
+        ...deck, cards: deck.cards.filter(c => c.id !== cardId)
+      };
+      })
+    );
     }
 
 
