@@ -25,8 +25,7 @@ export function TopMargin(){
     function MenuDisplay(){
       return (
         <div className="menuDisplay">
-           <Link to="/deckSettings">Deck Settings</Link> <br></br>
-           <Link to="/decks">Practice a deck</Link> <br></br>
+           <Link to="/deckSettingsList">Deck Settings</Link> <br></br>
            <Link to="/">Home</Link> <br></br>
            <Link to="/decksList">Decks List</Link>
         </div>

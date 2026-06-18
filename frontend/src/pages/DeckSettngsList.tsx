@@ -36,7 +36,7 @@ function Createdeck(){
   }
 
   //TO DO: Add ability to choose settings or practice
-export default function DeckList(){
+export default function DeckSettingsList(){
     const {decks} = useDeck();
     const [showAddForm, setShowAddForm] = useState(false);
 
@@ -47,11 +47,11 @@ export default function DeckList(){
     return(
         <div>
             <TopMargin/>
-        <p>Select your deck</p>
+        <p>Select your deck to adjust</p>
 
         {decks.map(deck => (
             <div key={deck.id}>
-                <Link to={`/decks/${deck.id}`}>{deck.name}</Link>
+                <Link to={`/deckSettings/${deck.id}`}>{deck.name}</Link>
                 </div>
         ))}
 
@@ -59,7 +59,6 @@ export default function DeckList(){
         {showAddForm && <Createdeck />}
 
 
-        <p>Create a new deck</p>
         
         </div>
     );

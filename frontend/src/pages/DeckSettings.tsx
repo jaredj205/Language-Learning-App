@@ -5,16 +5,13 @@ import { useState } from 'react'
 import '../App.css';
 import { Link } from "react-router-dom";
 import {type Card} from "../types/Card";
+import {type Deck} from "../types/Deck";
 
 
 
-
-
-
-type AddCardFormProps = {
-  onAdd: (card: Card) => void;
+type EditCardFormProps = {
+  card: Card;
 };
-
 
  function DisplayDeck({cards}: {cards: Card[]}){
 
@@ -42,16 +39,26 @@ type AddCardFormProps = {
  }
 
 
-function AddCardForm({onAdd}: AddCardFormProps){
+
+function AddCardForm(){
+  const {deckId} = useParams();
+  const {decks, addCard} = useDeck();
   const [front, setFront] = useState('');
   const [back, setBack] = useState('');
-  
-
+  const deck = decks.find(d => d.id === deckId);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>){
     e.preventDefault();
 
-    onAdd({front,back, id: crypto.randomUUID()});
+    if (!deck){
+    return (<div> <p>Deck not found</p> <br></br>
+              <Link to="/">Home</Link> <br></br>
+            </div>);
+  }
+
+
+
+    addCard(deck.id, {front,back, id: crypto.randomUUID()});
     setFront('');
     setBack('');
 
@@ -71,13 +78,51 @@ function AddCardForm({onAdd}: AddCardFormProps){
     );
 
   }
+
+  function EditCardForm({card}: EditCardFormProps){
+  const {deckId} = useParams();
+  const {decks, editCard} = useDeck();
+  const [front, setFront] = useState(card.front);
+  const [back, setBack] = useState(card.back);
+  const deck = decks.find(d => d.id === deckId);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    if (!deck){
+    return (<div> <p>Deck not found</p> <br></br>
+              <Link to="/">Home</Link> <br></br>
+            </div>);
+  }
+
+
+    editCard(deck.id, {front,back, id: card.id});
+    setFront('');
+    setBack('');
+
+  }
+    return(
+      <div>
+        <form onSubmit={handleSubmit}>
+          <h2>Edit a Card</h2>
+
+          <input placeholder={front} value={front} onChange={(e) => setFront(e.target.value)}></input>
+          <input placeholder={back} value={back} onChange={(e) => setBack(e.target.value)}></input>
+
+          <button type="submit">Edit</button>
+
+        </form>
+      </div>
+    );
+
+  }
     
 
    
 
 
 function DeckSettings(){
-  const { decks, setDecks, addCard, deleteCard, deleteDeck, addDeck} = useDeck();
+  const { decks, addCard, deleteCard, editCard } = useDeck();
   const {deckId} = useParams();
 
   const deck = decks.find(d => d.id === deckId);
@@ -90,54 +135,29 @@ function DeckSettings(){
   
   
   const cards = deck.cards; //Temporary 
-  const [index, setIndex] = useState(0);
-  const [flipCard, setFlipCard] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [showTable, setShowTable] = useState(false);
-  const hasNext = index < cards.length - 1;
+  const [showEditForm, setShowEditForm] = useState(false);
 
-  function handleFlipCard() {
-    setFlipCard(!flipCard);
-  }
 
   function handleShowAddForm(){
     setShowAddForm(!showAddForm);
   }
 
-  function handleShowTable(){
-    setShowTable(!showTable);
+  function handleShowEditForm(){
+    setShowEditForm(!showEditForm);
   }
 
-  function handleNextClick() {
-    if (hasNext) {
-      setIndex(index + 1);
-      setFlipCard(false);
-
-    } else {
-      setIndex(0);
-      setFlipCard(false);
-    }
-  }
-  
-
-  let frontCard = "There is no card";
-  let backCard = "There is no card";
-  if (cards.length > 0) {
-   frontCard = cards[index].front;
-   backCard = cards[index].back;
-}
 
 
-
-  
-
+  //Fix edit button, form shows up on every row
+  //Potentially have each card in an editable form and have one update button at the bottom
   return (
     <div>
+      <div className="mainBody">
       <TopMargin />
-      <p>Settings</p>
       <button onClick={handleShowAddForm}> Add a card </button>
-      {showAddForm && <AddCardForm onAdd={(card) => addCard(deck.id, card)} />}
-      <table>
+      {showAddForm && <AddCardForm />}
+    <table>
   <thead>
      <tr>
       <th>Number</th>
@@ -153,16 +173,13 @@ function DeckSettings(){
         <td>{card.front}</td>
         <td>{card.back}</td>
         <td><button onClick={() => deleteCard(deck.id, cards[index].id)}>Delete Card</button></td>
+        <td><button onClick={handleShowEditForm}> Edit card </button></td> 
+        {showEditForm && <EditCardForm card={cards[index]} />}
+        
        </tr>
      ))}
    </tbody>
  </table>
-
-
-
-
-
-
       {/* <div className="mainBody">
       <TopMargin />
       <button onClick={handleNextClick}> Next </button>
@@ -179,7 +196,7 @@ function DeckSettings(){
       
       </div> */}
       
-
+      </div>
     </div>
   );
 

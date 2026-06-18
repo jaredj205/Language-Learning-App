@@ -9,6 +9,7 @@ export type DeckContextType = {
   deleteDeck: (id: string) => void;
   addCard: (id: string, card: Card) => void;
   deleteCard: (id: string, cardId: string) => void;
+  editCard: (id: string, card: Card) => void;
   setDecks: React.Dispatch<React.SetStateAction<Deck[]>>;
 
 };
@@ -56,6 +57,23 @@ export function DeckProvider({children}: DeckProviderProps){
     );
     }
 
+    function editCard(id: string, alteredCard: Card){
+        setDecks(prev => prev.map(deck => {
+            if(deck.id !== id){
+                return deck;
+            }
+            return{
+                ...deck, cards:deck.cards.map(card => {
+                    if (card.id !== alteredCard.id){
+                        return card;
+                    }
+                    return alteredCard;
+                })
+            };
+    }));
+
+    }
+
 
 
     //useEffect runs the function on startup
@@ -74,7 +92,7 @@ export function DeckProvider({children}: DeckProviderProps){
     }, [decks]);
 
     return(
-        <DeckContext.Provider value={{decks, addDeck, deleteDeck, addCard, deleteCard, setDecks}}>{children}</DeckContext.Provider>
+        <DeckContext.Provider value={{decks, addDeck, deleteDeck, addCard, deleteCard, editCard, setDecks}}>{children}</DeckContext.Provider>
     );
     
 }

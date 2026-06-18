@@ -5,12 +5,14 @@ import './App.css';
 import Practice from "./pages/Practice";
 import { DeckProvider } from "./context/DeckContext";
 import DeckList from "./pages/DecksList";
+import DeckSettingsList from "./pages/DeckSettngsList";
 
 function App(){
   return(
     
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/deckSettingsList" element={<DeckSettingsList />} />
       <Route path="/deckSettings" element={<DeckSettings />} />
       <Route path="/deckSettings/:deckId" element={<DeckSettings />} />
       <Route path="/decks" element={<Practice />} />
