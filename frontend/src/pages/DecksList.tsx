@@ -23,7 +23,6 @@ function Createdeck(){
     return(
       <div>
         <form onSubmit={handleSubmit}>
-          <h2>Create Deck</h2>
 
           <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}></input>
 
@@ -47,20 +46,18 @@ export default function DeckList(){
     return(
         <div>
             <TopMargin/>
+            <div className="mainBody">
         <p>Select your deck</p>
 
         {decks.map(deck => (
             <div key={deck.id}>
-                <Link to={`/decks/${deck.id}`}>{deck.name}</Link>
+                <Link className="deckLink"to={`/decks/${deck.id}`}>{deck.name}</Link>
                 </div>
         ))}
 
         <button onClick={handleShowAddForm}>Create a deck</button>
         {showAddForm && <Createdeck />}
-
-
-        <p>Create a new deck</p>
-        
+        </div>
         </div>
     );
 }

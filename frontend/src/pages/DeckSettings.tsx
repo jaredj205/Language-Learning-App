@@ -146,19 +146,7 @@ function DeckSettings(){
 
   }
   
-  
   const cards = deck.cards; //Temporary 
-  const [showAddForm, setShowAddForm] = useState(false);
-
-
-
-  function handleShowAddForm(){
-    setShowAddForm(!showAddForm);
-  }
-
-
-
-
 
   //<p>{flipCard ? backCard : frontCard}</p>
   //<td>{showEditForm && <EditCardForm card={cards[index]} />}</td>
@@ -168,9 +156,8 @@ function DeckSettings(){
     <div>
       <div className="mainBody">
       <TopMargin />
-      <button onClick={handleShowAddForm}> Add a card </button>
+      <button onClick={() => addCard(deck.id, {front:"", back:"", id: crypto.randomUUID()})}> Add a card </button>
       <button onClick={() => populateDeck()}>Populate Deck </button>
-      {showAddForm && <AddCardForm />}
     <table className="editDeckTable">
   <thead>
      <tr>
@@ -193,6 +180,7 @@ function DeckSettings(){
      ))}
    </tbody>
  </table>
+
       </div>
     </div>
 //     <div>

@@ -56,6 +56,7 @@ function Practice(){
   const [index, setIndex] = useState(0);
   const [flipCard, setFlipCard] = useState(false);
   const hasNext = index < cards.length - 1;
+  const hasBack = index > 0;
 
   function handleFlipCard() {
     setFlipCard(!flipCard);
@@ -72,6 +73,18 @@ function Practice(){
       setFlipCard(false);
     }
   }
+
+  function handleBackClick(){
+    if (hasBack) {
+      setIndex(index - 1);
+      setFlipCard(false);
+
+    } else {
+      setIndex(0);
+      setFlipCard(false);
+    }
+  }
+  
   
 
   let frontCard = "There is no card";
@@ -89,11 +102,16 @@ function Practice(){
     <div>
        <div className="mainBody">
       <TopMargin />
-      <button onClick={handleNextClick}> Next </button>
+    
       <h2>
-        <p>{flipCard ? backCard : frontCard}</p>
+        <p className="cardText">{flipCard ? backCard : frontCard}</p>
       </h2>
+      <div className="practiceButtons">
+      <button onClick={handleBackClick}> Back </button>
       <button onClick={handleFlipCard}> Flip </button>
+      <button onClick={handleNextClick}> Next </button>
+      </div>
+      
       <h3>Card {index + 1 } of {cards.length}</h3>
       {/* <button onClick={handleShowTable}> Show Deck </button>
       {showTable && <DisplayDeck cards={cards} />} */}

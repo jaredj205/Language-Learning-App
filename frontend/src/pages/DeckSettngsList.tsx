@@ -23,7 +23,6 @@ function Createdeck(){
     return(
       <div>
         <form onSubmit={handleSubmit}>
-          <h2>Create Deck</h2>
 
           <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}></input>
 
@@ -37,7 +36,7 @@ function Createdeck(){
 
   //TO DO: Add ability to choose settings or practice
 export default function DeckSettingsList(){
-    const {decks} = useDeck();
+    const {decks, deleteDeck} = useDeck();
     const [showAddForm, setShowAddForm] = useState(false);
 
     function handleShowAddForm(){
@@ -47,16 +46,22 @@ export default function DeckSettingsList(){
     return(
         <div>
             <TopMargin/>
-        <p>Select your deck to adjust</p>
-
+            <div className="mainBody">
+        <p id="bodyText">Select your deck to adjust</p>
+        <div className="deckSettingsLayout">
         {decks.map(deck => (
             <div key={deck.id}>
-                <Link to={`/deckSettings/${deck.id}`}>{deck.name}</Link>
+                <Link className="deckLink" to={`/deckSettings/${deck.id}`}>{deck.name}({deck.cards.length} Cards)</Link>
+                <br></br>
+                <button onClick={() => deleteDeck(deck.id)}>Delete Deck</button>
                 </div>
         ))}
+        </div>
 
         <button onClick={handleShowAddForm}>Create a deck</button>
         {showAddForm && <Createdeck />}
+
+        </div>
 
 
         
