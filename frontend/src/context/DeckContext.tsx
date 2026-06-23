@@ -8,6 +8,7 @@ export type DeckContextType = {
   handleShuffleMode:() => void;
   addDeck: (name: string) => void;
   deleteDeck: (id: string) => void;
+  editDeck: (id: string, newName: string) => void;
   addCard: (id: string, card: Card) => void;
   deleteCard: (id: string, cardId: string) => void;
   editCard: (id: string, card: Card) => void;
@@ -38,6 +39,20 @@ export function DeckProvider({children}: DeckProviderProps){
     function deleteDeck(id: string){
         setDecks(prev => prev.filter(deck => deck.id !== id));
     }
+
+    function editDeck(deckId: string, newName: string) {
+    setDecks(prev =>
+        prev.map(deck => {
+            if (deck.id !== deckId) {
+                return deck;
+            }
+
+            return {
+                ...deck,
+                name: newName
+            };
+        }));
+}
     
     function addCard(id: string, card: Card){
         setDecks(prev => prev.map(deck => {
@@ -98,7 +113,7 @@ export function DeckProvider({children}: DeckProviderProps){
     }, [decks]);
 
     return(
-        <DeckContext.Provider value={{shuffleMode, decks, handleShuffleMode, addDeck, deleteDeck, addCard, deleteCard, editCard, setDecks}}>{children}</DeckContext.Provider>
+        <DeckContext.Provider value={{shuffleMode, decks, handleShuffleMode, addDeck, deleteDeck, editDeck, addCard, deleteCard, editCard, setDecks}}>{children}</DeckContext.Provider>
     );
     
 }
