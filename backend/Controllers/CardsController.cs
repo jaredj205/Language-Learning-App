@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using backend.Models;
 
 namespace backend.Controllers;
 
@@ -13,6 +14,8 @@ public class CardsController : ControllerBase
         {
             new { Front = "dom", Back = "house" },
             new { Front = "nie", Back = "no" }
+
+
         });
     }
 }
