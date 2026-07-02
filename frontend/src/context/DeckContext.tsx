@@ -28,6 +28,13 @@ export function DeckProvider({children}: DeckProviderProps){
     const [decks, setDecks] = useState<Deck[]>([]);
     const [shuffleMode, setShuffleMode] = useState(false);
 
+    const loadDecks = async () => {
+    const response = await fetch("http://localhost:5165/api/decks");
+    const data = await response.json();
+
+    setDecks(data);
+};
+
     function handleShuffleMode(){
     setShuffleMode(!shuffleMode);
   }
@@ -95,22 +102,25 @@ export function DeckProvider({children}: DeckProviderProps){
 
     }
 
+    useEffect(() => {
+    loadDecks();
+}, []);
 
 
     //useEffect runs the function on startup
-    useEffect(() => {
-        const savedDecks = localStorage.getItem("decks");
-        if (savedDecks){
-            setDecks(JSON.parse(savedDecks));
+    // useEffect(() => {
+    //     const savedDecks = localStorage.getItem("decks");
+    //     if (savedDecks){
+    //         setDecks(JSON.parse(savedDecks));
 
-        }
+    //     }
 
-    }, []);
+    // }, []);
 
-    //This useEffect alters the saved data of decks whenever it is altered. Runs the return first then the function
-    useEffect(() => {
-        localStorage.setItem("decks", JSON.stringify(decks));
-    }, [decks]);
+    // //This useEffect alters the saved data of decks whenever it is altered. Runs the return first then the function
+    // useEffect(() => {
+    //     localStorage.setItem("decks", JSON.stringify(decks));
+    // }, [decks]);
 
     return(
         <DeckContext.Provider value={{shuffleMode, decks, handleShuffleMode, addDeck, deleteDeck, editDeck, addCard, deleteCard, editCard, setDecks}}>{children}</DeckContext.Provider>
