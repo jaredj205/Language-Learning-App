@@ -33,7 +33,9 @@ export function DeckProvider({children}: DeckProviderProps){
     const data = await response.json();
 
     setDecks(data);
-};
+  };
+
+  
 
     function handleShuffleMode(){
     setShuffleMode(!shuffleMode);

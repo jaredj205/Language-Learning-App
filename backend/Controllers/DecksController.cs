@@ -26,20 +26,20 @@ public class DecksController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-public IActionResult RemoveDeck(string id)
-{
-    var deck = decks.FirstOrDefault(d => d.Id == id);
+    public IActionResult RemoveDeck(string id)
+    {
+        var deck = decks.FirstOrDefault(d => d.Id == id);
 
-    if (deck == null)
-        {
-            return NotFound(); 
-        }
-        
+        if (deck == null)
+            {
+                return NotFound(); 
+            }
+            
 
-    decks.Remove(deck);
+        decks.Remove(deck);
 
-    return Ok(decks);
-}
+        return Ok(decks);
+    }
 
     [HttpPut("{id}")]
     public IActionResult UpdateDeck(string id, [FromBody] Deck updatedDeck)
