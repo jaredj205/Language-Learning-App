@@ -51,7 +51,6 @@ public class DecksController : ControllerBase
             return NotFound(); 
         }
         deck.Name = updatedDeck.Name;
-        deck.Cards = updatedDeck.Cards;
         return Ok(decks);
         
     }

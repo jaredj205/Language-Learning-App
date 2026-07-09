@@ -121,7 +121,7 @@ function AddCardForm(){
 
 
 function DeckSettings(){
-  const { decks, addCard, deleteCard, editCard, editDeck } = useDeck();
+  const { decks, deleteDeck, addCard, deleteCard, editCard, editDeck } = useDeck();
   const {deckId} = useParams();
 
   const deck = decks.find(d => d.id === deckId);
@@ -159,6 +159,7 @@ function DeckSettings(){
       <input value={deck.name} onChange={(e) => editDeck(deck.id, e.target.value)}></input> <br></br>
       <button onClick={() => addCard(deck.id, {front:"", back:"", id: crypto.randomUUID()})}> Add a card </button>
       <button onClick={() => populateDeck()}>Populate Deck </button>
+      <button onClick={() => deleteDeck(deck.id)}>Delete Deck</button>
       <div className="editDeckSection">
     <table className="editDeckTable">
   <thead>

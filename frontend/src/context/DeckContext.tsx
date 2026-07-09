@@ -29,11 +29,72 @@ export function DeckProvider({children}: DeckProviderProps){
     const [shuffleMode, setShuffleMode] = useState(false);
 
     const loadDecks = async () => {
+    console.log("Loading decks");
     const response = await fetch("http://localhost:5165/api/decks");
     const data = await response.json();
 
+    console.log(data);
+
     setDecks(data);
   };
+
+  const addDeck = async (name: string) => {
+    console.log("Creating deck");
+    const deck = {name, cards: []};
+    const response = await fetch("http://localhost:5165/api/decks", 
+        {method: "POST", 
+        headers: {"Content-Type": "application/json"}, 
+        body: JSON.stringify(deck)});
+    const data = await response.json();
+
+    console.log(data);
+
+    await loadDecks();
+  };
+
+  const deleteDeck = async (id: string) => {
+    console.log("Removing deck");
+    const response = await fetch(`http://localhost:5165/api/decks/${id}`, 
+        {method: "DELETE"});
+    const data = await response.json();
+
+    console.log(data);
+
+    await loadDecks();
+  };
+
+  const editDeck = async (id: string, newName: string) => {
+    console.log("Editing deck");
+    const deck = {name:newName}
+    const response = await fetch(`http://localhost:5165/api/decks/${id}`, 
+        {method: "PUT", 
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(deck)});
+    const data = await response.json();
+
+    console.log(data);
+
+    await loadDecks();
+  };
+
+
+  const addCard = async (id: string, card: Card) => {
+    console.log("Adding card");
+    const response = await fetch(`http://localhost:5165/api/decks/${id}`, 
+        {method: "PUT", 
+        headers: {"Content-Type": "application/json"}, 
+        body: JSON.stringify(card)});
+    const data = await response.json();
+
+    console.log(data);
+
+    await loadDecks();
+  };
+
+
+  
+
+    
 
   
 
@@ -41,39 +102,39 @@ export function DeckProvider({children}: DeckProviderProps){
     setShuffleMode(!shuffleMode);
   }
 
-    function addDeck(name: string){
-    setDecks(prev => [...prev, {id: crypto.randomUUID() , name, cards: []}])
-    }
+    // function addDeck(name: string){
+    // setDecks(prev => [...prev, {id: crypto.randomUUID() , name, cards: []}])
+    // }
 
-    function deleteDeck(id: string){
-        setDecks(prev => prev.filter(deck => deck.id !== id));
-    }
+    // function deleteDeck(id: string){
+    //     setDecks(prev => prev.filter(deck => deck.id !== id));
+    // }
 
-    function editDeck(deckId: string, newName: string) {
-    setDecks(prev =>
-        prev.map(deck => {
-            if (deck.id !== deckId) {
-                return deck;
-            }
+//     function editDeck(deckId: string, newName: string) {
+//     setDecks(prev =>
+//         prev.map(deck => {
+//             if (deck.id !== deckId) {
+//                 return deck;
+//             }
 
-            return {
-                ...deck,
-                name: newName
-            };
-        }));
-}
+//             return {
+//                 ...deck,
+//                 name: newName
+//             };
+//         }));
+// }
     
-    function addCard(id: string, card: Card){
-        setDecks(prev => prev.map(deck => {
-            if(deck.id !== id){
-                return deck;
-            }
-            return{
-                ...deck, cards:[...deck.cards, card]
-            };
-    }));
+    // function addCard(id: string, card: Card){
+    //     setDecks(prev => prev.map(deck => {
+    //         if(deck.id !== id){
+    //             return deck;
+    //         }
+    //         return{
+    //             ...deck, cards:[...deck.cards, card]
+    //         };
+    // }));
 
-    }
+    // }
 
     function deleteCard(id: string, cardId: string){
         setDecks(prev => prev.map(deck => {

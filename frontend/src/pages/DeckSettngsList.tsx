@@ -1,5 +1,4 @@
 import { TopMargin } from "./Home";
-import { useParams } from "react-router-dom";
 import { useDeck } from "../context/DeckContext";
 import { useState } from 'react'
 import { Link } from "react-router-dom";
@@ -36,7 +35,7 @@ function Createdeck(){
 
   //TO DO: Add ability to choose settings or practice
 export default function DeckSettingsList(){
-    const {decks, deleteDeck} = useDeck();
+    const {decks} = useDeck();
     const [showAddForm, setShowAddForm] = useState(false);
 
     function handleShowAddForm(){
@@ -53,7 +52,6 @@ export default function DeckSettingsList(){
             <div key={deck.id}>
                 <Link className="deckLink" to={`/deckSettings/${deck.id}`}>{deck.name}({deck.cards.length} Cards)</Link>
                 <br></br>
-                <button onClick={() => deleteDeck(deck.id)}>Delete Deck</button>
                 </div>
         ))}
         </div>
