@@ -78,15 +78,22 @@ export function DeckProvider({children}: DeckProviderProps){
   };
 
 
+  //FIX THIS -- Does not work properly
   const addCard = async (id: string, card: Card) => {
     console.log("Adding card");
+    const deck = decks.find(d => d.id === id);
+    if (!deck) {
+        console.log("Deck not found");
+        return;
+    }
+    const newDeck = addCardToDeck(deck, card);
     const response = await fetch(`http://localhost:5165/api/decks/${id}`, 
         {method: "PUT", 
         headers: {"Content-Type": "application/json"}, 
-        body: JSON.stringify(card)});
+        body: JSON.stringify(newDeck)});
     const data = await response.json();
 
-    console.log(data);
+    console.log(await response.text());
 
     await loadDecks();
   };
@@ -101,6 +108,8 @@ export function DeckProvider({children}: DeckProviderProps){
     function handleShuffleMode(){
     setShuffleMode(!shuffleMode);
   }
+
+  
 
     // function addDeck(name: string){
     // setDecks(prev => [...prev, {id: crypto.randomUUID() , name, cards: []}])
@@ -124,17 +133,15 @@ export function DeckProvider({children}: DeckProviderProps){
 //         }));
 // }
     
-    // function addCard(id: string, card: Card){
-    //     setDecks(prev => prev.map(deck => {
-    //         if(deck.id !== id){
-    //             return deck;
-    //         }
-    //         return{
-    //             ...deck, cards:[...deck.cards, card]
-    //         };
-    // }));
+    function addCardToDeck(deck: Deck, card: Card){
+            return{
+                ...deck, cards:[...deck.cards, card]
+            };
+    };
 
-    // }
+    
+
+    
 
     function deleteCard(id: string, cardId: string){
         setDecks(prev => prev.map(deck => {
